@@ -21,7 +21,7 @@ class ActionController
     {
         $this->server = $server;
         $this->frame = $frame;
-        $this->routes = config('config.actions');
+        $this->routes = config('actions');
     }
 
     public function getAction()
@@ -32,7 +32,7 @@ class ActionController
         //var_dump($value);
         if(isset($value['action']) && array_key_exists($value['action'],$this->routes)){
 
-            list($action,$controller) =  explode('@',$this->routes[$value['action']]);
+            list($controller,$action) =  explode('@',$this->routes[$value['action']]);
 
             $this->action = $action;
             $this->controller = 'App\Controller\\' . $controller;
@@ -43,10 +43,10 @@ class ActionController
     {
         $this->getAction();
 
+        if($this->controller && $this->action){
+            call_user_func([new $this->controller($this->server,$this->frame),$this->action],$this->data);
+        }
 
-        //var_dump($this->action);
-        //var_dump($this->controller);
-        call_user_func([$this->controller,$this->action],$this->server,$this->frame);
 
         //$this->server->push($this->frame->fd, 'Recv: ' . $this->frame->data);
     }

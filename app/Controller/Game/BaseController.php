@@ -19,4 +19,12 @@ class BaseController extends AbstractController
         $this->frame = $frame;
     }
 
+    public function push($action,$data)
+    {
+        $message = [
+            'action' => $action,
+            'data' => $data
+        ];
+        $this->server->push($this->frame->fd,json_encode($message));
+    }
 }

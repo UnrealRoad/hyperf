@@ -9,6 +9,8 @@ class AttributeController extends AbstractController
     static public function create(WebSocketServer $server,$request)
     {
 
+
+
         $server->push($request->fd,json_encode([
             'user' => $request->get['name'],
             'pass' => $request->get['password']

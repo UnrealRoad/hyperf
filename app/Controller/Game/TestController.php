@@ -8,8 +8,10 @@ namespace App\Controller\Game;
 class TestController extends BaseController
 {
 
-     public function test()
+
+
+     public function test($data)
     {
-        $this->server->push($this->frame->fd,'hello');
+        $this->push('test',$data);
     }
 }
