@@ -26,4 +26,6 @@ class User extends Model
      * @var array
      */
     protected $casts = [];
+
+    protected $hidden = ['password'];
 }

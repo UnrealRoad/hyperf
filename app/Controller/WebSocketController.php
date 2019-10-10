@@ -24,13 +24,17 @@ class WebSocketController implements OnMessageInterface, OnOpenInterface, OnClos
 
     public function onClose(Server $server, int $fd, int $reactorId): void
     {
-        var_dump('closed');
+        //var_dump('closed');
     }
 
     public function onOpen(WebSocketServer $server, Request $request): void
     {
-        call_user_func(['App\Controller\Game\AttributeController','create'],$server,$request);
-        //$server->disconnect($request->fd,4001,'hehe');
+        if($request->get['type'] == 'login' || $request->get['type'] == 'register'){
+            call_user_func(['App\Controller\Game\AuthController',$request->get['type']],$server,$request);
+        }else{
+            $server->disconnect($request->fd);
+        }
+        //
         //$server->push($request->fd, json_encode($request->get));
     }
 }
