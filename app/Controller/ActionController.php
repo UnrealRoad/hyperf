@@ -5,18 +5,22 @@ declare(strict_types = 1);
 namespace App\Controller;
 
 use Hyperf\Config\Config;
+use Hyperf\Utils\Context;
 use Swoole\WebSocket\Frame;
 use Swoole\WebSocket\Server as WebSocketServer;
 
+/**
+ * Class ActionController
+ * @package App\Controller
+ * @property WebSocketServer $server
+ * @property Frame $frame
+ * @property $action
+ * @property $controller
+ * @property $data
+ * @property $routes
+ */
 class ActionController
 {
-    public $server;
-    public $frame;
-    public $action;
-    public $controller;
-    public $data;
-
-    public $routes;
     public function __construct(WebSocketServer $server, Frame $frame)
     {
         $this->server = $server;
@@ -51,4 +55,13 @@ class ActionController
         //$this->server->push($this->frame->fd, 'Recv: ' . $this->frame->data);
     }
 
+    public function __get($name)
+    {
+        return Context::get(__CLASS__ . ':' .$name);
+    }
+
+    public function __set($name, $value)
+    {
+        Context::set(__CLASS__ . ':' .$name,$value);
+    }
 }

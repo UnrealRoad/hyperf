@@ -49,5 +49,7 @@ class AuthController
             ]));
             $server->disconnect($request->fd);
         }
+
     }
+
 }

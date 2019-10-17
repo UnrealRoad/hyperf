@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Controller\Game\AttributeController;
+use App\Controller\Game\AuthController;
 use Hyperf\Contract\OnCloseInterface;
 use Hyperf\Contract\OnMessageInterface;
 use Hyperf\Contract\OnOpenInterface;
@@ -29,8 +30,9 @@ class WebSocketController implements OnMessageInterface, OnOpenInterface, OnClos
 
     public function onOpen(WebSocketServer $server, Request $request): void
     {
+        $server->push($request->fd, json_encode($request));
         if($request->get['type'] == 'login' || $request->get['type'] == 'register'){
-            call_user_func(['App\Controller\Game\AuthController',$request->get['type']],$server,$request);
+            call_user_func([new AuthController(),$request->get['type']],$server,$request);
         }else{
             $server->disconnect($request->fd);
         }
