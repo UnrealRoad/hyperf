@@ -30,7 +30,7 @@ class WebSocketController implements OnMessageInterface, OnOpenInterface, OnClos
 
     public function onOpen(WebSocketServer $server, Request $request): void
     {
-        $server->push($request->fd, json_encode($request));
+
         if($request->get['type'] == 'login' || $request->get['type'] == 'register'){
             call_user_func([new AuthController(),$request->get['type']],$server,$request);
         }else{

@@ -26,9 +26,24 @@ class IndexController extends AbstractController
         $user = $this->request->input('user', 'Hyperf');
         $method = $this->request->getMethod();
 
+        $header = [];
+        $payload = [
+            'user_id' => 1,
+            'exp' => 1,
+            'sub' => 'token'
+        ];
+        $a = base64_encode(json_encode($header));
+        $b = base64_encode(json_encode($payload));
+        $c = password_hash('asdasdrvbvbt43sfddfsdfsdf',PASSWORD_BCRYPT);
+        $c1 = password_hash('asdasdrvbvbt43sfddfsdfsdf',PASSWORD_BCRYPT);
+        if (hash_equals($c, crypt('asdasdrvbvbt43sfddfsdfsdf', $c))) {
+            echo "Password verified!";
+        }
+        $test = base64_encode('asdasdrvbvbt43sfddfsdfsdf');
         return [
-            'method' => $this->request,
-            'message' => "Hello {$user}.",
+            'message' => $test,
+            'c' => $c,
+            'c1' => $c1
         ];
     }
 }

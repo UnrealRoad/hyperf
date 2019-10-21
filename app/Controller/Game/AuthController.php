@@ -15,8 +15,9 @@ class AuthController
     {
         $username = $request->get['username'];
         $password = $request->get['password'];
-        $userInfo = User::where('username',$username)->where('password',$password)->first();
-        if($userInfo){
+        $userInfo = User::where('username',$username)->first();
+
+        if($userInfo && $this->check($password,$userInfo->password)){
             $server->push($request->fd,json_encode([
                 'action' => 'login',
                 'data' => $userInfo
@@ -37,8 +38,9 @@ class AuthController
         $password = $request->get['password'];
         $userInfo = User::create([
             'username' => $username,
-            'password' => $password
+            'password' => $this->hash($password)
         ]);
+
         if($userInfo){
             $server->push($request->fd,json_encode($request));
         }else{
@@ -50,6 +52,23 @@ class AuthController
             $server->disconnect($request->fd);
         }
 
+    }
+
+    protected function hash($password){
+        $hash = password_hash($password,PASSWORD_BCRYPT);
+        if($hash === false){
+
+        }
+        return $hash;
+    }
+
+    protected function check($password,$hash){
+
+        if (password_verify($password, $hash)) {
+            // 使用户登录
+            return true;
+        }
+        return false;
     }
 
 }
