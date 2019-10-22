@@ -5,7 +5,7 @@ if(!function_exists('success')){
         $json['code'] = $code;
         $json['data'] = is_array($data) || is_object($data) ? $data : [];
         $json['msg'] = is_array($data) || is_object($data) ? $msg : $data;
-        return response()->json($json,200);
+        return json_encode($json);
     }
 }
 
@@ -15,7 +15,7 @@ if(!function_exists('fail')){
         $json['code'] = $code;
         $json['data'] = is_array($data) || is_object($data) ? $data : [];
         $json['msg'] = is_array($data) || is_object($data) ? $msg : $data;
-        return response()->json($json,200);
+        return json_encode($json,200);
     }
 }
 

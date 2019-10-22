@@ -18,7 +18,9 @@ class WebSocketController implements OnMessageInterface, OnOpenInterface, OnClos
 
     public function onMessage(WebSocketServer $server, Frame $frame): void
     {
-        //$server->push($frame->fd, 'Recv: ' . $frame->data);
+        $server->push($frame->fd, json_encode($frame));
+        $token = '';
+        JWT::verifyToken($token);
         (new ActionController($server,$frame))->run();
 
     }
@@ -30,13 +32,18 @@ class WebSocketController implements OnMessageInterface, OnOpenInterface, OnClos
 
     public function onOpen(WebSocketServer $server, Request $request): void
     {
+        //
+        $token = $request->header['sec-websocket-protocol'];
 
-        if($request->get['type'] == 'login' || $request->get['type'] == 'register'){
-            call_user_func([new AuthController(),$request->get['type']],$server,$request);
+        if($token){
+            if(JWT::verifyToken($token)){
+                $server->push($request->fd, 'success');
+            }else{
+                $server->disconnect($request->fd);
+            }
         }else{
             $server->disconnect($request->fd);
         }
-        //
-        //$server->push($request->fd, json_encode($request->get));
+
     }
 }

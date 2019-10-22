@@ -2,37 +2,45 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Game;
+namespace App\Controller;
 
 use App\Model\User;
+use Hyperf\HttpServer\Annotation\Controller;
+use Hyperf\HttpServer\Annotation\RequestMapping;
 use Hyperf\HttpServer\Contract\RequestInterface;
-use Hyperf\HttpServer\Contract\ResponseInterface;
 use Swoole\Http\Request;
 use Swoole\WebSocket\Server as WebSocketServer;
+
+/**
+ * Class AuthController
+ * @package App\Controller
+ *
+ */
 class AuthController
 {
-    public function login(WebSocketServer $server, Request $request)
+    /**
+     * @param Request $request
+     * @RequestMapping(path="/login",methods="get")
+     */
+    public function login( RequestInterface $request)
     {
-        $username = $request->get['username'];
-        $password = $request->get['password'];
+
+        $data = $request->all();
+        $username = $data['username'];
+        $password = $data['password'];
         $userInfo = User::where('username',$username)->first();
 
         if($userInfo && $this->check($password,$userInfo->password)){
-            $server->push($request->fd,json_encode([
-                'action' => 'login',
-                'data' => $userInfo
-            ]));
+            return success([
+                    'token' => JWT::getToken()
+                ])
+            ;
         }else{
-            $server->push($request->fd,json_encode([
-                'action' => 'loginFail',
-                'data' => [],
-                'message' => '登录失败'
-            ]));
-            $server->disconnect($request->fd);
+            return fail();
         }
     }
 
-    public function register(WebSocketServer $server, Request $request)
+    public function register(Request $request)
     {
         $username = $request->get['username'];
         $password = $request->get['password'];
@@ -42,14 +50,9 @@ class AuthController
         ]);
 
         if($userInfo){
-            $server->push($request->fd,json_encode($request));
+            return success($userInfo);
         }else{
-            $server->push($request->fd,json_encode([
-                'action' => 'registerFail',
-                'data' => [],
-                'message' => '注册失败'
-            ]));
-            $server->disconnect($request->fd);
+            return fail();
         }
 
     }
