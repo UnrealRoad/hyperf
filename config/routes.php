@@ -14,6 +14,14 @@ use Hyperf\HttpServer\Router\Router;
 
 Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@index');
 Router::addRoute(['GET', 'POST', 'HEAD','OPTIONS'], '/login', 'App\Controller\AuthController@login');
+Router::addRoute(['GET','OPTIONS'], '/getUserState', 'App\Controller\AuthController@getUserState');
+################################################################
 Router::addServer('ws',function(){
     Router::get('/','App\Controller\WebSocketController');
+});
+################################################################
+
+$date = date('Ymd');
+Router::addGroup("/$date",function(){
+    Router::get('admin','App\Controller\IndexController@admin');
 });

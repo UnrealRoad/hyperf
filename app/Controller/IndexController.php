@@ -46,4 +46,9 @@ class IndexController extends AbstractController
             'c1' => $c1
         ];
     }
+
+    public function admin()
+    {
+        return success('hello');
+    }
 }

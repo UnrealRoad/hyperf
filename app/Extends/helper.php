@@ -2,7 +2,7 @@
 if(!function_exists('success')){
     function success($data = [],$msg = '操作成功',$code = 1000){
         $json = [];
-        $json['code'] = $code;
+        $json['code'] = is_int($data) ? $data : $code;;
         $json['data'] = is_array($data) || is_object($data) ? $data : [];
         $json['msg'] = is_array($data) || is_object($data) ? $msg : $data;
         return json_encode($json);
@@ -12,10 +12,10 @@ if(!function_exists('success')){
 if(!function_exists('fail')){
     function fail($data = [],$msg = '操作失败',$code = 2000){
         $json = [];
-        $json['code'] = $code;
+        $json['code'] = is_int($data) ? $data : $code;
         $json['data'] = is_array($data) || is_object($data) ? $data : [];
         $json['msg'] = is_array($data) || is_object($data) ? $msg : $data;
-        return json_encode($json,200);
+        return json_encode($json);
     }
 }
 

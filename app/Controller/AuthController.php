@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Exception\ApiException;
 use App\Model\User;
-use Hyperf\HttpServer\Annotation\Controller;
+use App\Traits\ApiResponse;
+use Hyperf\HttpMessage\Stream\SwooleStream;
 use Hyperf\HttpServer\Annotation\RequestMapping;
 use Hyperf\HttpServer\Contract\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
+use Swoole\Exception;
 use Swoole\Http\Request;
-use Swoole\WebSocket\Server as WebSocketServer;
+
 
 /**
  * Class AuthController
@@ -18,6 +23,7 @@ use Swoole\WebSocket\Server as WebSocketServer;
  */
 class AuthController
 {
+    use ApiResponse;
     /**
      * @param Request $request
      * @RequestMapping(path="/login",methods="get")
@@ -74,4 +80,19 @@ class AuthController
         return false;
     }
 
+    public function getUserState(RequestInterface $request)
+    {
+
+        $token = $request->getHeader('authorization');
+        if(!$token){
+            $this->fail('请登录',UNAUTHORIZED);
+        }
+        list($token) = $token;
+        $token = explode(' ',$token);
+        list($bearer,$token) = $token;
+        if(JWT::verifyToken($token)){
+            $this->success();
+        }
+         $this->fail('请登录',UNAUTHORIZED);
+    }
 }

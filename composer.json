@@ -59,7 +59,8 @@
             "App\\": "app/"
         },
         "files": [
-            "app/Extends/helper.php"
+            "app/Extends/helper.php",
+            "app/Extends/constants.php"
         ]
     },
     "autoload-dev": {
