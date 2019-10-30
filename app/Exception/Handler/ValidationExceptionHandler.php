@@ -18,7 +18,7 @@ class ValidationExceptionHandler extends ExceptionHandler
         $data = json_encode([
             'code' => 2000,
             'data' => $throwable->validator->errors(),
-            'message' => $throwable->validator->errors()->first()
+            'msg' => $throwable->validator->errors()->first()
         ]);
 
         // 阻止异常冒泡
