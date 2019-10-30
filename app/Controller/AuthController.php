@@ -85,14 +85,14 @@ class AuthController
 
         $token = $request->getHeader('authorization');
         if(!$token){
-            $this->fail('请登录',UNAUTHORIZED);
+            return fail('请登录');
         }
         list($token) = $token;
         $token = explode(' ',$token);
         list($bearer,$token) = $token;
         if(JWT::verifyToken($token)){
-            $this->success();
+            return success();
         }
-         $this->fail('请登录',UNAUTHORIZED);
+         return fail('请登录');
     }
 }

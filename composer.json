@@ -36,7 +36,8 @@
         "hyperf/redis": "~1.1.0",
         "hyperf/utils": "~1.1.0",
         "hyperf/websocket-server": "^1.1",
-        "ext-json": "*"
+        "ext-json": "*",
+        "hyperf/validation": "^1.1"
     },
     "require-dev": {
         "swoft/swoole-ide-helper": "^4.2",
@@ -59,8 +60,7 @@
             "App\\": "app/"
         },
         "files": [
-            "app/Extends/helper.php",
-            "app/Extends/constants.php"
+            "app/Extends/helper.php"
         ]
     },
     "autoload-dev": {

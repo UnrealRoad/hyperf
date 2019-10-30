@@ -21,7 +21,7 @@ Router::addServer('ws',function(){
 });
 ################################################################
 
-$date = date('Ymd');
-Router::addGroup("/$date",function(){
-    Router::get('admin','App\Controller\IndexController@admin');
+Router::addGroup("/blog/",function(){
+    Router::post('store','App\Controller\Blog\BlogController@store');
+    Router::get('list','App\Controller\Blog\BlogController@list');
 });
