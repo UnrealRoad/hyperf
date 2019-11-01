@@ -85,7 +85,7 @@ class AuthController
 
         $token = $request->getHeader('authorization');
         if(!$token){
-            return fail('请登录');
+            return fail([],'请登录',2001);
         }
         list($token) = $token;
         $token = explode(' ',$token);
@@ -93,6 +93,6 @@ class AuthController
         if(JWT::verifyToken($token)){
             return success();
         }
-         return fail('请登录');
+         return fail([],'请登录',2001);
     }
 }

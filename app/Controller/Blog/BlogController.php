@@ -13,7 +13,8 @@ class BlogController extends BaseController
 {
     public function index(RequestInterface $request, ResponseInterface $response)
     {
-        return $response->raw('Hello Hyperf!');
+        $data = Blog::paginate(15);
+        return success($data);
     }
 
     public function store(BlogRequest $request)
@@ -21,7 +22,6 @@ class BlogController extends BaseController
 
         $data = $request->validated();
 
-        var_dump($request);
-        //return Blog::create($data) ? success() : fail();
+        return Blog::create($data) ? success() : fail();
     }
 }

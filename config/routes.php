@@ -23,5 +23,5 @@ Router::addServer('ws',function(){
 
 Router::addGroup("/blog/",function(){
     Router::post('store','App\Controller\Blog\BlogController@store');
-    Router::get('list','App\Controller\Blog\BlogController@list');
+    Router::get('list','App\Controller\Blog\BlogController@index');
 });
