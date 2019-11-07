@@ -13,7 +13,6 @@ use Hyperf\HttpServer\Contract\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Swoole\Exception;
-use Swoole\Http\Request;
 
 
 /**
@@ -38,7 +37,7 @@ class AuthController
 
         if($userInfo && $this->check($password,$userInfo->password)){
             return success([
-                    'token' => JWT::getToken()
+                'token' => JWT::getToken(['is_admin'=>$userInfo->is_admin])
                 ])
             ;
         }else{
@@ -46,15 +45,15 @@ class AuthController
         }
     }
 
-    public function register(Request $request)
+    public function register(RequestInterface $request)
     {
-        $username = $request->get['username'];
-        $password = $request->get['password'];
+        $username = $request->input('username');
+        $password = $request->input('password');
+
         $userInfo = User::create([
             'username' => $username,
             'password' => $this->hash($password)
         ]);
-
         if($userInfo){
             return success($userInfo);
         }else{

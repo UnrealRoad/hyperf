@@ -14,6 +14,7 @@ use Hyperf\HttpServer\Router\Router;
 
 Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@index');
 Router::addRoute(['GET', 'POST', 'HEAD','OPTIONS'], '/login', 'App\Controller\AuthController@login');
+Router::addRoute(['GET', 'POST', 'HEAD','OPTIONS'], '/register', 'App\Controller\AuthController@register');
 Router::addRoute(['GET','OPTIONS'], '/getUserState', 'App\Controller\AuthController@getUserState');
 ################################################################
 Router::addServer('ws',function(){

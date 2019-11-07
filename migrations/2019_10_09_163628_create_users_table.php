@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->integer('wx')->default(0);
             $table->integer('fy')->default(0);
             $table->tinyInteger('is_created')->default(0)->comment('是否创建;0否 1是');
+            $table->tinyInteger('is_admin')->default(0)->comment('0否 1是');
             $table->timestamps();
         });
     }
